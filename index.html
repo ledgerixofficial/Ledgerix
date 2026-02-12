@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledgerix - LDX Token Sale</title>
+
+<style>
+body {
+    background:#000;
+    color:#fff;
+    font-family:Arial, sans-serif;
+    text-align:center;
+    margin:0;
+}
+h1 { font-size:80px; margin-top:50px; letter-spacing:8px; }
+.info { margin-top:10px; font-size:18px; }
+button { background:#111; color:#fff; border:1px solid #444; padding:15px 30px; margin-top:20px; cursor:pointer; }
+button:hover { background:#222; }
+.section { margin-top:40px; }
+input { width:85%; padding:12px; margin:10px 0; background:#111; border:1px solid #444; color:#fff; }
+.address-box { background:#111; border:1px solid #444; padding:15px; margin:10px auto; width:85%; word-break:break-all; }
+.notice { position:fixed; bottom:20px; right:20px; background:#111; border:1px solid #444; padding:12px; font-size:13px; width:240px; }
+</style>
+</head>
+
+<body>
+
+<h1>LEDGERIX</h1>
+
+<div class="info">
+Total Supply: 18,000,000 LDX<br>
+Token Price: $0.008<br>
+Manual verification within 24 hours.
+</div>
+
+<button onclick="showBuy()">BUY LDX TOKEN</button>
+
+<div id="buySection" class="section" style="display:none;">
+
+<h3>USDT (TRC20 - TRON)</h3>
+<div class="address-box" id="usdt">
+TJDgRoBz17YykU92bHnyFGubgDVFgtPpXq
+</div>
+<button onclick="copyAddress('usdt')">Copy Address</button>
+
+<h3>USDC (Solana Network)</h3>
+<div class="address-box" id="usdc">
+8YAYoH4AA7Yy5jqPS85EqtAoy4JyjRkza3h5xktJeMgc
+</div>
+<button onclick="copyAddress('usdc')">Copy Address</button>
+
+<p>Minimum: $100 | Maximum: $1500</p>
+
+<form action="https://formsubmit.co/ledgerixsuppprt@financier.com" method="POST" onsubmit="return validateAmount()">
+
+<input type="hidden" name="_next" value="https://ledgerixofficial.github.io/Ledgerix/">
+
+<input type="number" id="amount" name="amount" placeholder="Investment Amount (USD)" required oninput="calcTokens()">
+
+<div id="result"></div>
+
+<input type="text" name="telegram" placeholder="Telegram Username" required>
+<input type="text" name="txid" placeholder="Transaction ID (TxID)" required>
+
+<input type="hidden" name="_captcha" value="false">
+
+<button type="submit">Submit Confirmation</button>
+
+</form>
+
+</div>
+
+<div class="notice" id="liveBox"></div>
+
+<script>
+
+const price = 0.008;
+
+function showBuy(){
+document.getElementById("buySection").style.display="block";
+}
+
+function copyAddress(id){
+var text=document.getElementById(id).innerText;
+navigator.clipboard.writeText(text);
+alert("Address copied.");
+}
+
+function calcTokens(){
+var amt=document.getElementById("amount").value;
+if(amt>0){
+var tokens=Math.floor(amt/price);
+document.getElementById("result").innerHTML=
+"You will receive approx <b>"+tokens.toLocaleString()+" LDX</b>";
+}
+}
+
+function validateAmount(){
+var amt=document.getElementById("amount").value;
+if(amt<100||amt>1500){
+alert("Amount must be between $100 and $1500.");
+return false;
+}
+return true;
+}
+
+/* Small Live Purchases */
+
+function randomWallet(){
+const chars="abcdef0123456789";
+let r="0x";
+for(let i=0;i<6;i++){
+r+=chars.charAt(Math.floor(Math.random()*chars.length));
+}
+return r+"...";
+}
+
+function randomAmount(){
+return Math.floor(Math.random()*(220-100+1))+100;
+}
+
+function updateLive(){
+let amt=randomAmount();
+let tokens=Math.floor(amt/price);
+let min=Math.floor(Math.random()*3)+1;
+
+document.getElementById("liveBox").innerHTML=
+randomWallet()+" purchased "+tokens.toLocaleString()+" LDX<br>"+min+" minutes ago";
+}
+
+setInterval(updateLive,8000);
+updateLive();
+
+</script>
+
+</body>
+</html>
